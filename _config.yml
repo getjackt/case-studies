@@ -1,0 +1,17 @@
+title: Case Studies
+description: Technical case studies by Jack Truong
+
+markdown: kramdown
+kramdown:
+  input: GFM
+  hard_wrap: true
+
+defaults:
+  - scope:
+      path: ""
+    values:
+      layout: default
+
+exclude:
+  - README.md
+  - .vscode

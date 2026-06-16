@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% if page.title %}{{ page.title }} | {% endif %}{{ site.title }}</title>
+<meta name="description" content="{{ site.description }}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0F4C81; --navy-dark:#0b3a63;
+    --ink:#15202b; --muted:#5b6b7a; --faint:#8593a0;
+    --line:#e7eaef; --bg:#ffffff; --page:#f6f8fa; --tint:#eef4fa;
+    --maxw:720px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{font-family:'IBM Plex Sans',-apple-system,Segoe UI,Roboto,sans-serif;color:var(--ink);background:var(--page);line-height:1.65;font-size:16px;-webkit-font-smoothing:antialiased;}
+  a{color:var(--navy);text-decoration:none;}
+  a:hover{text-decoration:underline;}
+  code,pre{font-family:'IBM Plex Mono',ui-monospace,monospace;}
+  .topbar{background:var(--bg);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5;}
+  .topbar .inner{max-width:var(--maxw);margin:0 auto;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;}
+  .brand{font-weight:700;letter-spacing:-0.01em;color:var(--ink);}
+  .brand a{color:var(--ink);}
+  .brand span{color:var(--navy);}
+  .navlinks a{color:var(--muted);font-size:14px;margin-left:18px;}
+  .navlinks a:hover{color:var(--navy);}
+  section.page{background:var(--bg);border:1px solid var(--line);border-radius:14px;margin:28px auto;padding:38px 44px;max-width:var(--maxw);}
+  .back{font-size:13.5px;color:var(--muted);display:inline-block;margin-bottom:14px;}
+  h1{font-size:29px;line-height:1.2;font-weight:700;letter-spacing:-0.015em;margin:0 0 14px;}
+  h1.title{font-size:34px;margin-bottom:6px;}
+  .lede{color:var(--muted);font-size:17px;margin:0 0 8px;}
+  blockquote{margin:0 0 20px;padding:14px 18px;background:var(--tint);border-left:3px solid var(--navy);border-radius:0 8px 8px 0;color:#2a3a47;font-size:15.5px;}
+  blockquote p{margin:0;}
+  blockquote + p{background:var(--tint);border:1px solid var(--line);border-radius:10px;padding:13px 17px;font-size:14px;color:#33424f;line-height:1.7;}
+  blockquote + p strong{color:var(--navy);font-weight:600;}
+  h2{font-size:14px;text-transform:uppercase;letter-spacing:.08em;font-weight:700;color:var(--navy);margin:32px 0 12px;}
+  h3{font-size:16px;font-weight:600;margin:24px 0 10px;}
+  p{margin:0 0 16px;}
+  ul,ol{margin:0 0 16px;padding-left:22px;}
+  li{margin:4px 0;}
+  p:has(> img){text-align:center;margin:24px 0 6px;}
+  img{max-width:100%;border:1px solid var(--line);border-radius:10px;display:block;margin:0 auto;}
+  p:has(> em:only-child){color:var(--muted);font-size:13.5px;font-style:italic;text-align:center;margin:0 0 22px;}
+  pre{background:#0f1b27;color:#dfe7ee;padding:16px 18px;border-radius:10px;overflow:auto;font-size:13.5px;line-height:1.55;margin:0 0 18px;}
+  p code,li code,td code{background:var(--tint);color:var(--navy-dark);padding:1.5px 6px;border-radius:5px;font-size:13.5px;}
+  table{width:100%;border-collapse:collapse;font-size:14px;margin:0 0 18px;display:block;overflow-x:auto;}
+  th,td{border:1px solid var(--line);padding:8px 11px;text-align:left;}
+  th{background:var(--tint);color:#2a3a47;font-weight:600;}
+  hr{border:none;border-top:1px solid var(--line);margin:28px 0;}
+  .cards{display:flex;flex-direction:column;gap:12px;margin-top:24px;}
+  .card{display:block;border:1px solid var(--line);border-radius:12px;padding:18px 20px;background:var(--bg);transition:border-color .15s,transform .15s;}
+  .card:hover{border-color:var(--navy);transform:translateY(-1px);text-decoration:none;}
+  .card .ct{font-weight:600;color:var(--ink);font-size:17px;}
+  .card .cd{color:var(--muted);font-size:14.5px;margin-top:3px;}
+  .card .cg{display:inline-block;margin-top:10px;font-size:12px;font-weight:500;color:var(--navy);background:var(--tint);padding:3px 9px;border-radius:20px;}
+  .notes{margin-top:26px;padding-top:18px;border-top:1px solid var(--line);color:var(--muted);font-size:13.5px;}
+  footer{max-width:var(--maxw);margin:0 auto;padding:26px 24px 60px;color:var(--faint);font-size:13px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+  footer a{color:var(--muted);}
+  @media (max-width:600px){section.page{padding:26px 22px;margin:16px;}}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="inner">
+    <div class="brand"><a href="{{ '/' | relative_url }}">Jack <span>Truong</span></a></div>
+    <div class="navlinks">
+      <a href="{{ '/' | relative_url }}">Case studies</a>
+      <a href="https://github.com/getjackt/case-studies">GitHub</a>
+    </div>
+  </div>
+</div>
+<section class="page">
+  {% if page.url != '/' %}<a class="back" href="{{ '/' | relative_url }}">&larr; All case studies</a>{% endif %}
+  {{ content }}
+</section>
+<footer>
+  <span>Jack Truong &middot; Full-stack, AI-first</span>
+  <a href="https://github.com/getjackt">github.com/getjackt</a>
+</footer>
+</body>
+</html>
