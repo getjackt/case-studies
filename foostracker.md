@@ -3,7 +3,7 @@
 > A computer vision pipeline that tracks the ball, players, and game events in real foosball footage. Python/FastAPI backend, React frontend, custom-trained YOLO11 model. Codenamed Foostracker.
 
 **Status:** Active development, personal use
-**Role:** Solo builder
+**Role:** Solo. The model work is hands-on mine: I gathered the footage, labelled the dataset in Label Studio, designed the augmentation strategy, and ran and evaluated the training. The application built around the model I designed and directed rather than hand-wrote.
 **Stack:** Python, FastAPI, SQLite, SQLAlchemy, Ultralytics YOLO11, OpenCV, ByteTrack, PyTorch, CoreML, React, TypeScript, Vite, TanStack Query, Tailwind, Label Studio
 **Live:** Local-only, demo on request
 
@@ -17,7 +17,7 @@ The first version was pure OpenCV with HSV color tracking. It mostly worked on a
 
 - A two-service web app: FastAPI backend that runs the video pipeline as a background task, React 19 + Vite SPA that handles upload, calibration, playback, and event review.
 - A three-phase video pipeline. Phase 1 runs YOLO11 detection per frame plus ByteTrack for player identity and a custom rod-constrained ball tracker. Phase 2 runs a pluggable classifier system over the stored frame data with an `on_departure` / `on_transit` / `on_resolution` / `on_timeout` lifecycle. Phase 3 is an optional CNN+LSTM enrichment layer that is currently turned off.
-- Pluggable classifiers for pass detection, shot detection, intent (shot vs pass vs fumble at departure), ball-on-rod timing, rod possession, and ITSF time violations. Around 5,907 lines of classifier code across nine modules.
+- Pluggable classifiers across nine modules, covering pass detection, shot detection, intent (shot vs pass vs fumble at departure), ball-on-rod timing, rod possession, and ITSF time violations.
 - A two-tool labeling pipeline. Bounding boxes in Label Studio, action labels (shots, passes, possessions) in custom React UI inside Foostracker, since the action data ties directly to game events the app already understands.
 - Multi-backend inference: PyTorch `.pt` for compatibility, CoreML `.mlpackage` for the Apple Silicon path, swappable at runtime.
 - A replay export service that writes an interchange format consumed by Foosball Playbook for animated playback on the simulated table.

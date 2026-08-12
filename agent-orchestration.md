@@ -1,9 +1,9 @@
 # Personal AI Agent Orchestration Platform
 
-> A native macOS and iOS app over a Node.js/Fastify backend that runs my agent work end-to-end. Used daily on a Mac Studio.
+> A native macOS and iOS app over a Node.js/Fastify backend that I use to plan, dispatch and supervise my agent work. Used daily on a Mac Studio.
 
 **Status:** Production, daily use
-**Role:** Solo builder
+**Role:** Solo. Architecture and direction. The platform is built by the agents that run through it, which is the point of it.
 **Stack:** Swift (macOS + iOS), Node.js / Fastify, PostgreSQL, Claude Agent SDK, MCP, Tailscale, Caddy, launchd
 **Live:** Private (used internally)
 
@@ -15,8 +15,8 @@ It runs on my Mac Studio under launchd, behind Caddy, with Tailscale for remote 
 
 ## What I built
 
-- A Node.js / Fastify backend with about 49 Postgres tables covering kanban, dispatch, sessions, knowledge base, terminal sessions, cron jobs, profiles, and approvals. Long-running, supervised by launchd.
-- A native SwiftUI app, dual-target for iOS 18 and macOS 15, with around 76k lines of Swift across 351 files. Six main tabs (Assistant, Kanban, Knowledge, Ideas, Search, Workspace) plus a menu-bar Quick Panel and multi-window scenes on macOS.
+- A Node.js / Fastify backend covering kanban, dispatch, sessions, knowledge base, terminal sessions, cron jobs, profiles, and approvals. Long-running, supervised by launchd.
+- A native SwiftUI app, dual-target for iOS 18 and macOS 15. Six main tabs (Assistant, Kanban, Knowledge, Ideas, Search, Workspace) plus a menu-bar Quick Panel and multi-window scenes on macOS.
 - An assistant agent loop on top of the Claude Agent SDK, with a unified session service that normalizes streaming events, classifies SDK errors, and routes tool approvals back to the user via push.
 - A custom MCP server (separate Node process) with 11 tool modules. Two entry points: a full server and a project-scoped one that auto-injects `project_id` and exposes a smaller surface, since agents do not need everything the human client needs.
 - A dispatch system where the assistant acts as PM and spawns specialized workers (backend, SwiftUI, MCP, test-writer). Runtime SDK handles live in memory, persistent state lives in a `dispatches` table, and a worker-core protocol prompt is injected through `canUseTool` so the PM never sees it but every worker does.
@@ -37,7 +37,7 @@ If I started over, I would probably skip MCP and lean on plain bash commands ins
 
 ## Screenshots / Demos
 
-![JackOS mid-orchestration: a relay skill checkpoints the active epic's state and hands off to a fresh tracked agent session spawned through the MCP server, with active epics tracked across projects in the side panel](images/jackos-orchestration.png)
+![The platform mid-orchestration: a relay skill checkpoints the active epic's state and hands off to a fresh tracked agent session spawned through the MCP server, with active epics tracked across projects in the side panel](images/agent-orchestration.png)
 
 *The platform mid-orchestration. When a working session's context fills, a custom relay skill checkpoints the active epic's state and a what's-done / what's-next handoff, then spawns a fresh tracked agent session through the MCP server, so long-running work continues across sessions without losing the thread. The right panel tracks active epics across projects.*
 

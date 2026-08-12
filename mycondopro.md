@@ -1,17 +1,17 @@
-# MyCondoPro: RESO MLS Sync and Custom Map Search at Scale
+# MyCondoPro: RESO MLS Sync and Custom Map Search
 
-> A WordPress plugin suite that syncs the TRREB MLS feed into a dual-table state machine, then renders it through a custom React + Google Maps frontend. 150k+ active listings, 1.2M+ historical records, end-to-end solo build.
+> A WordPress plugin suite that syncs the TRREB MLS feed into a dual-table state machine, then renders it through a custom React + Google Maps frontend. 150k+ active listings, 1.2M+ historical records.
 
 **Status:** Production. Active maintenance, ongoing performance work.
-**Role:** Solo lead engineer
+**Role:** Solo. The original build is hands-on mine, the PHP and the data layer included. The later work I designed and directed rather than hand-wrote.
 **Stack:** PHP 8, WordPress, PHP-DI, Action Scheduler, MySQL (FTS, spatial geometry, custom UDFs), Google Geocoding API, React 18, TypeScript, Vite, Tailwind v4, TanStack Query v5, Zustand, @vis.gl/react-google-maps
 **Live:** https://mycondopro.ca/mls
 
 ## Why it exists
 
-MyCondoPro is a Toronto-area real estate site that needed a full MLS surface inside WordPress: a live map of every active listing, search and filtering at scale, listing detail pages with full history, and an admin layer that could keep the data honest against a feed that updates around the clock. The TRREB RESO Web API publishes the data; the rest of the system did not exist.
+MyCondoPro is a Toronto-area real estate site that needed a full MLS surface inside WordPress: a live map of every active listing, search and filtering across the whole feed, listing detail pages with full history, and an admin layer that could keep the data honest against a feed that updates around the clock. The TRREB RESO Web API publishes the data; the rest of the system did not exist.
 
-I came in as the only engineer and built it end-to-end. Backend, frontend, database design, the operations layer that keeps it running, the live deployment. The plugin suite has lived in production through the whole cycle, and most of what's interesting about the codebase came out of running it under real conditions.
+I came in as the only engineer. Backend, frontend, database design, the operations layer that keeps it running, the live deployment. The plugin suite has lived in production through the whole cycle, and most of what's interesting about the codebase came out of running it under real conditions.
 
 ## What I built
 
@@ -47,11 +47,11 @@ The self-healing stack came out of getting tired of that. Each replication job c
 
 The design system was my first serious dive into Tailwind. The 10 typed token modules (animation, border, color, glass, interaction, mobile, shadow, size, spacing, typography) came partly from learning the tool properly on a real project, and partly from the constraint of mirroring the existing brand styling from the Oxygen-built theme. Tailwind v4 with CSS-variable-first configuration made the brand-fidelity side workable.
 
-The one piece of v2 that was earned the hard way was the GPU and blur lifecycle subsystem. Maps are heavy when you have 100k+ markers across GTA inventory, and v1's static `backdrop-blur` declarations and untracked `will-change` hints turned the live site into a slideshow on real mobile devices. v2 has a `WillChangeManager` LRU singleton with a 10-element cap and a 250ms idle cleanup, an allowlist limited to `transform` and `opacity`, mobile blur tiers (8 to 12px on mobile against 20 to 32px on desktop) routed through CSS variables, and an explicit 60 FPS budget. Memoization coverage went from sparse to roughly 75% of components. That part was forced by real devices, not preference.
+The one piece of v2 that was earned the hard way was the GPU and blur lifecycle subsystem. Maps are heavy when the viewport's working set spans 100k+ clustered listings across GTA inventory, and v1's static `backdrop-blur` declarations and untracked `will-change` hints turned the live site into a slideshow on real mobile devices. v2 has a `WillChangeManager` LRU singleton with a 10-element cap and a 250ms idle cleanup, an allowlist limited to `transform` and `opacity`, mobile blur tiers (8 to 12px on mobile against 20 to 32px on desktop) routed through CSS variables, and an explicit 60 FPS budget. Memoization coverage went from sparse to roughly 75% of components. That part was forced by real devices, not preference.
 
 ## What I'd do differently
 
-**Greenfielding this today, I'd probably lean Laravel.** WordPress is the right tool for plenty of jobs, and what I built lives in production on it without complaint. For a real estate platform at this scale though, Laravel would have made a few things cleaner: Eloquent over the dual-table model, queues over Action Scheduler, a real service container instead of one I had to bootstrap inside a plugin parent. My current Rigital work (ShopFlow CRM) is Laravel-based, so this isn't retrospective revisionism, it's pattern recognition from where I've actually been shipping.
+**Greenfielding this today, I'd probably lean Laravel.** WordPress is the right tool for plenty of jobs, and what I built lives in production on it without complaint. For a real estate platform like this one though, Laravel would have made a few things cleaner: Eloquent over the dual-table model, queues over Action Scheduler, a real service container instead of one I had to bootstrap inside a plugin parent. A more recent freelance build of mine, ShopFlow CRM, is Laravel-based, with no active users on it yet.
 
 **The FTS trigger and UDFs should have lived in a migration, not on the database.** I authored the `BEFORE INSERT/UPDATE` trigger that populates the `va_fts_all` full-text column, plus four custom UDFs (`try_cast_decimal`, `try_cast_boolean`, `try_cast_integer`, `fn_json_array_to_fts_string`) that the trigger leans on. They work, and the FTS-backed autocomplete on top of them is one of the better surfaces in the app, but I applied the DDL directly to the database. It should have lived in a versioned migration alongside the plugin schema, the same way the table definitions do. Rebuilding any of the suite somewhere new is harder than it should be because of that gap.
 
@@ -71,4 +71,4 @@ Additional screenshots available on request.
 
 ## Closing
 
-This is the codebase that taught me the most about running my own infrastructure under conditions I didn't fully control. Most "WordPress plugin developer" portfolios stop at custom post types and Gutenberg blocks. This one has a CQRS-style repository layer, deadlock-aware writes, MySQL `GET_LOCK` job claiming, watchdog recovery, a spatial index, custom MySQL FTS, and a React frontend that holds 60 FPS on real mobile devices with 100k+ markers in play. Solo build, end-to-end, still live.
+This is the codebase that taught me the most about running my own infrastructure under conditions I didn't fully control. It has a CQRS-style repository layer, deadlock-aware writes, MySQL `GET_LOCK` job claiming, watchdog recovery, a spatial index, custom MySQL FTS, and a React frontend that holds 60 FPS on real mobile devices with 100k+ clustered listings in the viewport's working set. Solo build, still live.

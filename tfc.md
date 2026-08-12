@@ -3,9 +3,10 @@
 > A full-stack platform that runs a foosball club's league nights, DYP events, and tournaments, syncing a venue projector, a coordinator portal, and players' phones over WebSockets in real time. Laravel 12 + Vue 3, running as a PWA.
 
 **Status:** Live, used by the Toronto Foosball Club
-**Role:** Solo builder
+**Role:** Solo. Architecture, domain modelling and delivery. The double-elimination routing and the config-driven scoring model are the design work.
 **Stack:** Laravel 12, Vue 3 (Composition API), Inertia.js v2, Tailwind 4, shadcn-vue, Laravel Reverb (WebSockets), Filament v4, MySQL, Redis, Pest
-**Live:** events.torontofoosballclub.ca (member login)
+**Live:** events.torontofoosballclub.ca (member login required)
+**Source:** https://github.com/getjackt/tfc-event-manager
 
 ## Why it exists
 
@@ -43,7 +44,7 @@ It is also single-tenant by design. There is no organization or club boundary in
 
 ## Screenshots / Demos
 
-Live at events.torontofoosballclub.ca (member login). A walkthrough of the projector display, coordinator portal, and live scoring is available on request.
+The app is live at events.torontofoosballclub.ca but sits behind a member login, so the source is public instead: https://github.com/getjackt/tfc-event-manager. The repository README carries screenshots of the projector display, the coordinator portal and the player views, plus a visual tour. A live walkthrough is available on request.
 
 ## Closing
 
